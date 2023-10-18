@@ -1,52 +1,60 @@
-const getElement = (selector, closest) => {
-  let element = document.querySelector(selector);
+const selectors = [
+  // Collapsed Meny - Shorts
+  () =>
+    document.querySelector(
+      "ytd-mini-guide-entry-renderer[aria-label='Shorts']"
+    ),
+  // Expanded Menu - Shorts
+  () =>
+    document
+      .querySelector("[title='Shorts']")
+      ?.closest("ytd-guide-entry-renderer"),
+  // Expanded Menu - YouTube Music
+  () =>
+    document
+      .querySelector("[title='YouTube Music']")
+      ?.closest("ytd-guide-entry-renderer"),
+  // Header with small chips containing category names
+  () =>
+    document
+      .querySelector("ytd-feed-filter-chip-bar-renderer")
+      ?.closest("#header"),
+  // Shorts section (shelf)
+  () =>
+    document
+      .querySelector("ytd-rich-shelf-renderer[is-shorts]")
+      ?.closest("ytd-rich-section-renderer"),
+];
 
-  if (closest) {
-    element = element?.closest(closest);
-  }
+const observer = new MutationObserver((mutations) => {
+  // const addedNotesCount = mutations.reduce(
+  //   (acc, mutation) => acc + mutation.addedNodes.length,
+  //   0
+  // );
 
-  return element;
-};
+  // console.time("MutationObserver" + addedNotesCount);
 
-const removeElement = (selector, closest) => {
-  const element = getElement(selector, closest);
+  const doCheck = mutations.some((mutation) => mutation.addedNodes.length);
 
-  if (element) {
-    element.remove();
+  if (!doCheck) {
+    console.log("#####", "No added nodes");
     return;
   }
 
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      if (mutation.addedNodes.length) {
-        const element = getElement(selector, closest);
+  selectors.forEach((selector) => {
+    const element = selector();
 
-        if (element) {
-          element.remove();
-          observer.disconnect();
-        }
-      }
-    });
+    if (element) {
+      console.log("#####", "Removing element", element);
+      element.remove();
+    }
   });
 
-  observer.observe(document.body, {
-    childList: true,
-    subtree: true,
-  });
-};
+  // console.timeEnd("MutationObserver" + addedNotesCount);
+});
 
-// #####
-// Collapsed Menu
-// #####
-
-// Shorts
-removeElement("ytd-mini-guide-entry-renderer[aria-label='Shorts']");
-
-// #####
-// Expanded Menu
-// #####
-
-// Shorts
-removeElement("[title='Shorts']", "ytd-guide-entry-renderer");
-// YouTube Music
-removeElement("[title='YouTube Music']", "ytd-guide-entry-renderer");
+observer.observe(document.body, {
+  attributes: false,
+  childList: true,
+  subtree: true,
+});
