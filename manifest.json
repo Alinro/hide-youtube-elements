@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "My Extension",
+  "name": "Remove YouTube Elements",
   "version": "1.0",
-  "description": "This is my extension",
+  "description": "Chrome Extension to remove YouTube elements",
   "content_scripts": [
     {
       "matches": ["https://*.youtube.com/*"],
