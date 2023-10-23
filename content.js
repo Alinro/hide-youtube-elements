@@ -71,10 +71,10 @@ const observer = new MutationObserver((mutations) => {
 
   // console.time("MutationObserver" + addedNotesCount);
 
-  const doCheck = mutations.some((mutation) => mutation.addedNodes.length);
+  const hasAddedNodes = mutations.some((mutation) => mutation.addedNodes.length);
 
   // skip selector search if there are no added nodes
-  if (!doCheck) {
+  if (!hasAddedNodes) {
     // console.log("#####", "No added nodes");
     return;
   }
