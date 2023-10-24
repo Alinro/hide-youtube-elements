@@ -17,8 +17,4 @@ Tested on both small and large window sizes.
 
 ## How to install the extension
 
-1. Clone or download the repository
-1. Open Google Chrome and go to `chrome://extensions/`
-1. Enable "Developer mode" in the top right corner
-1. Click "Load unpacked" in the top left corner
-1. Select the folder containing the extension files
+Install the extension from [Chrome Web Store](https://chrome.google.com/webstore/detail/remove-youtube-elements/iiipmgpmkfpadjkdbolibnbneipjdfnm)
